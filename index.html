@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Caça-palavras</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- menu -->
+  <div id="menu">
+    <h1 class="titulo">Caça-palavras</h1>
+
+    <input type="text" id="nome" placeholder="Digite seu nome">
+
+    <button id="btnJogar">Começar</button>
+    <button id="btnTop">Top 10</button>
+
+    <div id="ranking"></div>
+  </div>
+  <!-- joguinho -->
+  <div id="jogo" class="hidden">
+    <div class="topo">
+      <span id="pontos">0</span>
+      <h2 class="titulo-jogo">Caça-palavras</h2>
+      <div class="menu-icon">☰</div>
+    </div>
+
+    <div id="palavras"></div>
+
+    <div id="grid"></div>
+  </div>
+
+  <!-- fim fase -->
+  <div id="fim" class="hidden">
+    <h2>É isso aí!</h2>
+    <button id="proximo">Próximo</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
