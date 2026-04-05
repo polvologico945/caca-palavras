@@ -162,10 +162,9 @@ document.getElementById('proximo').onclick = () => {
   criarGrid();
 };
 
-//hamburguer
+//hamburguer por enquanto
 document.querySelector('.menu-icon').onclick = () => {
   if (confirm('Deseja sair?')) {
-    salvarPontuacao();
     location.reload();
   }
 };
