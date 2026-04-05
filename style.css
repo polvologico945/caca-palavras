@@ -1,0 +1,73 @@
+body {
+  font-family: Arial;
+  background: white;
+  text-align: center;
+}
+
+/* title */
+.titulo {
+  color: purple;
+}
+
+.titulo-jogo {
+  color: purple;
+}
+
+/* button */
+button {
+  background: yellow;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* esconder telas */
+.hidden {
+  display: none;
+}
+
+/* top */
+.topo {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+#pontos {
+  color: green;
+}
+
+/* words */
+#palavras {
+  color: green;
+  margin: 10px;
+}
+
+/* grid */
+#grid {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  gap: 3px;
+  justify-content: center;
+}
+
+.letra {
+  width: 40px;
+  height: 40px;
+  border: 1px solid lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  cursor: pointer;
+}
+
+/* selection */
+.selecionada {
+  background: yellow;
+}
+
+.correta {
+  background: #ffff99;
+}
