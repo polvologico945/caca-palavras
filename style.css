@@ -40,8 +40,20 @@ button {
 
 /* words */
 #palavras {
-  color: green;
-  margin: 10px;
+  margin: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.palavra-box {
+  background: #ccffcc; /* verde claro */
+  color: #006600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #99cc99;
 }
 
 /* grid */
@@ -70,4 +82,30 @@ button {
 
 .correta {
   background: #ffff99;
+}
+
+.menu-container {
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.menu-drop {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background: white;
+  border: 1px solid lightgray;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.menu-drop button {
+  background: yellow;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
 }

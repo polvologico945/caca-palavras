@@ -1,0 +1,25 @@
+{
+  "name": "caca-palavras",
+  "version": "1.0.0",
+  "description": "Projeto de jogo básico apresentável.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polvologico945/caca-palavras.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polvologico945/caca-palavras/issues"
+  },
+  "homepage": "https://github.com/polvologico945/caca-palavras#readme",
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
