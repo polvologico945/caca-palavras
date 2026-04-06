@@ -1,9 +1,19 @@
 let nomeJogador = '';
 let pontos = 0;
+let faseAtual = 0;
+let palavrasEncontradas = 0;
+let selecionadas = [];
 
 const menu = document.getElementById('menu');
 const jogo = document.getElementById('jogo');
+const fim = document.getElementById('fim');
 
+const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+//carregar ranking ao abrir
+carregarRanking();
+
+//eventos
 document.getElementById('btnJogar').onclick = () => {
     nomeJogador = document.getElementById('nome').value;
 
@@ -18,11 +28,94 @@ document.getElementById('btnJogar').onclick = () => {
     iniciarJogo();
 };
 
+const rankingDiv = document.getElementById('ranking');
+
+document.getElementById('btnTop').onclick = async () => {
+    if (rankingDiv.classList.contains('hidden')) {
+        await carregarRanking();
+        rankingDiv.classList.remove('hidden');
+    } else {
+        rankingDiv.classList.add('hidden');
+    }
+};
+
+
+document.getElementById('btnSair').onclick = async () => {
+    console.log("clicou sair");
+
+    try {
+        await salvarPontuacao();
+        console.log("salvou no banco");
+    } catch (erro) {
+        console.log("erro ao salvar, mas vai sair mesmo");
+    }
+
+    location.reload();
+};
+//próxima fase
+document.getElementById('proximo').onclick = () => {
+    faseAtual++;
+
+    if (faseAtual >= fases.length) {
+        fimDeJogo();
+        return;
+    }
+
+    palavrasEncontradas = 0;
+    selecionadas = [];
+
+    fim.classList.add('hidden');
+    jogo.classList.remove('hidden');
+
+    criarGrid();
+};
+
+//fim do jogo
+async function fimDeJogo() {
+    try {
+        await salvarPontuacao();
+    } catch (e) {
+        console.log("erro ao salvar no fim");
+    }
+
+    //esconder todas as telas
+    menu.classList.add('hidden');
+    jogo.classList.add('hidden');
+    fim.classList.add('hidden');
+
+    const final = document.getElementById('final');
+    final.classList.remove('hidden');
+
+    document.getElementById('mensagemFinal').textContent =
+        `${nomeJogador}, sua pontuação foi: ${pontos}`;
+    
+    //desabilita botão temporariamente
+    const btnReiniciar = document.getElementById('reiniciar');
+    btnReiniciar.disabled = true;
+
+    //libera após 10 segundos
+    setTimeout(() => {
+        btnReiniciar.disabled = false;
+    }, 10000);
+}
+
+
+//botao reiniciar
+document.getElementById('reiniciar').onclick = () => {
+    location.reload();
+};
+
+//menu
+const menuIcon = document.querySelector('.menu-icon');
+const menuDrop = document.getElementById('menuDrop');
+
+menuIcon.onclick = () => {
+    menuDrop.classList.toggle('hidden');
+};
+
 function iniciarJogo() {
     criarGrid();
 }
-
-const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 function criarGrid() {
     const grid = document.getElementById('grid');
@@ -30,7 +123,7 @@ function criarGrid() {
 
     let matriz = Array(10).fill().map(() => Array(10).fill(''));
 
-    //colocar as palavras
+    //colocar palavras
     fases[faseAtual].palavras.forEach(palavra => {
         let colocada = false;
         let tentativas = 0;
@@ -59,7 +152,7 @@ function criarGrid() {
         }
     });
 
-    //preencher o resto
+    //preencher restante
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
             if (matriz[i][j] === '') {
@@ -86,9 +179,7 @@ function criarGrid() {
 
     mostrarPalavras();
 }
-
-let selecionadas = [];
-
+// selecionar letra
 function selecionar(div) {
     if (div.classList.contains('selecionada')) return;
 
@@ -98,22 +189,12 @@ function selecionar(div) {
     verificarPalavra();
 }
 
-//verificar palavra
 function verificarPalavra() {
     if (selecionadas.length < 2) return;
 
-    const letras = selecionadas.map(l => l.textContent).join('');
-
     const linhas = selecionadas.map(l => parseInt(l.dataset.linha));
-    const colunas = selecionadas.map(l => parseInt(l.dataset.coluna));
-
-    //verificar se está na mesma linha
     const mesmaLinha = linhas.every(l => l === linhas[0]);
 
-    //verificar se está na mesma coluna (caso queira no futuro)
-    const mesmaColuna = colunas.every(c => c === colunas[0]);
-
-    //ordenar seleção pela coluna (esquerda → direita)
     let ordenadas = [...selecionadas];
 
     if (mesmaLinha) {
@@ -134,7 +215,6 @@ function verificarPalavra() {
 
         palavrasEncontradas++;
 
-        //marcar palavra encontrada
         document.querySelectorAll('.palavra-box').forEach(span => {
             if (span.textContent === tentativa) {
                 span.classList.add('encontrada');
@@ -144,7 +224,11 @@ function verificarPalavra() {
         selecionadas = [];
 
         if (palavrasEncontradas === 5) {
-            finalizarFase();
+            if (faseAtual >= fases.length - 1) {
+                fimDeJogo();
+            } else {
+                finalizarFase();
+            }
         }
     }
 
@@ -165,24 +249,21 @@ function atualizarPontos() {
     document.getElementById('pontos').textContent = pontos;
 }
 
-//fases
+//palavras e temas
 const fases = [
     { tema: "Copa", palavras: ["GOL", "BOLA", "TIME", "FIFA", "COPA"] },
     { tema: "Música", palavras: ["SOM", "NOTA", "RITMO", "BANDA", "CANTO"] },
-    { tema: "Filmes", palavras: ["ATOR", "CENA", "ROTEIRO", "FILME", "AÇÃO"] },
+    /*{ tema: "Filmes", palavras: ["ATOR", "CENA", "ROTEIRO", "FILME", "AÇÃO"] },
     { tema: "Frutas", palavras: ["MAÇA", "UVA", "PERA", "MANGA", "BANANA"] },
     { tema: "Países", palavras: ["BRASIL", "CHILE", "PERU", "JAPAO", "CANADA"] },
     { tema: "Estados", palavras: ["CEARA", "BAHIA", "PARA", "AMAPA", "GOIAS"] },
     { tema: "Ciência", palavras: ["ATOMO", "DNA", "CELULA", "ENERGIA", "FORCA"] },
     { tema: "Números", palavras: ["ONE", "TWO", "THREE", "FOUR", "FIVE"] },
     { tema: "Idiomas", palavras: ["PORTUGUES", "INGLES", "ESPANHOL", "FRANCES", "ITALIANO"] },
-    { tema: "Aleatório", palavras: ["SOL", "LUZ", "MAR", "VENTO", "TEMPO"] }
+    { tema: "Aleatório", palavras: ["SOL", "LUZ", "MAR", "VENTO", "TEMPO"] }*/
 ];
 
-let faseAtual = 0;
-let palavrasEncontradas = 0;
-
-//mostrar as palavras
+//ui
 function mostrarPalavras() {
     const div = document.getElementById('palavras');
     div.innerHTML = '';
@@ -196,34 +277,47 @@ function mostrarPalavras() {
     });
 }
 
-//fim de fase
-const fim = document.getElementById('fim');
-
 function finalizarFase() {
+    if (faseAtual >= fases.length - 1) {
+        fimDeJogo();
+        return;
+    }
     jogo.classList.add('hidden');
     fim.classList.remove('hidden');
 }
 
-//próxima fase
-document.getElementById('proximo').onclick = () => {
-    faseAtual++;
-    palavrasEncontradas = 0;
-    selecionadas = [];
+//backend
+async function salvarPontuacao() {
+    const resposta = await fetch('http://localhost:3000/salvar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            nome: nomeJogador,
+            pontos: pontos
+        })
+    });
 
-    fim.classList.add('hidden');
-    jogo.classList.remove('hidden');
+    if (!resposta.ok) {
+        throw new Error("Erro ao salvar");
+    }
+    console.log("resposta: ", resposta.status);
+}
 
-    criarGrid();
-};
+async function carregarRanking() {
+    try {
+        const resposta = await fetch('http://localhost:3000/top10');
+        const dados = await resposta.json();
 
-//hamburguer
-const menuIcon = document.querySelector('.menu-icon');
-const menuDrop = document.getElementById('menuDrop');
+        const div = document.getElementById('ranking');
+        div.innerHTML = '';
 
-menuIcon.onclick = () => {
-    menuDrop.classList.toggle('hidden');
-};
+        dados.forEach(j => {
+            const p = document.createElement('p');
+            p.textContent = `${j.nome} - ${j.pontos}`;
+            div.appendChild(p);
+        });
 
-document.getElementById('btnSair').onclick = () => {
-    location.reload();
-};
+    } catch (erro) {
+        console.log("Erro ao carregar ranking");
+    }
+}

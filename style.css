@@ -2,6 +2,7 @@ body {
   font-family: Arial;
   background: white;
   text-align: center;
+  padding: 10px;
 }
 
 /* title */
@@ -32,6 +33,8 @@ button {
   display: flex;
   justify-content: space-between;
   padding: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 #pontos {
@@ -54,23 +57,27 @@ button {
   border-radius: 8px;
   font-weight: bold;
   border: 1px solid #99cc99;
+  font-size: clamp(12px, 2vw, 16px);
 }
 
 /* grid */
 #grid {
   display: grid;
-  grid-template-columns: repeat(10, 40px);
+  grid-template-columns: repeat(10, minmax(30px, 1fr));
   gap: 3px;
-  justify-content: center;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .letra {
-  width: 40px;
-  height: 40px;
+  aspect-ratio: 1 / 1;
+  width: 100%;
   border: 1px solid lightgray;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: clamp(12px, 2vw, 18px);
   color: #555;
   cursor: pointer;
 }
@@ -108,4 +115,81 @@ button {
   border: none;
   padding: 8px;
   cursor: pointer;
+}
+
+#ranking {
+  margin-top: 20px;
+  padding: 15px;
+  background: #e8ffe8;
+  border-radius: 10px;
+  max-width: 90%;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ranking-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  margin-bottom: 5px;
+  background: white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.posicao {
+  color: green;
+}
+
+.nome {
+  flex: 1;
+  text-align: center;
+}
+
+.pontos {
+  color: darkgreen;
+}
+
+#final {
+  text-align: center;
+  margin-top: 100px;
+}
+
+#final h1 {
+  color: green;
+  font-size: 40px;
+}
+
+#final p {
+  font-size: 20px;
+  margin: 20px;
+}
+
+#reiniciar {
+  background: yellow;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+  #grid {
+    max-width: 95%;
+    grid-template-columns: repeat(10, minmax(20px, 1fr));
+  }
+
+  .letra {
+    font-size: 12px;
+  }
+
+  #ranking {
+    width: 95%;
+  }
+
+  button {
+    width: 100%;
+    max-width: 200px;
+  }
 }
