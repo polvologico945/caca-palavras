@@ -1,18 +1,34 @@
 body {
-  font-family: Arial;
   background: white;
   text-align: center;
   padding: 10px;
+  font-family: 'Times New Roman';
+  padding: 25px;
+}
+
+#jogo {
+  border: 5px solid #9900ff;
+  padding: 25px;
 }
 
 /* title */
 .titulo {
-  color: purple;
+  color: #9900ff;
 }
 
 .titulo-jogo {
-  color: purple;
+  color: #9900ff;
+  font-weight: 800;
+  animation: zoom 3s infinite;
+  font-family: 'Times New Roman';
 }
+
+@keyframes zoom{
+  0% {transform: scale(0.8);}
+  50% {transform: scale(1);}
+  100% {transform: scale(0.8);}
+}
+
 
 /* button */
 button {
@@ -32,18 +48,33 @@ button {
 .topo {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 1px;
   flex-wrap: wrap;
   gap: 10px;
 }
 
+#fim{
+  border: 3px solid #c281ed;
+  border: 5px solid #9900ff;
+  padding: 25px;
+  margin: 10%;
+}
+
 #pontos {
   color: green;
+  font-weight: bold;
+  animation: flutuar 2s infinite ease-in-out;
+}
+
+@keyframes flutuar{
+  0% {transform: translateY(0);}
+  50% {transform: translateY(-10px);}
+  100% {transform: translateY(0);}
 }
 
 /* words */
 #palavras {
-  margin: 15px;
+  margin: 25px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -51,7 +82,7 @@ button {
 }
 
 .palavra-box {
-  background: #ccffcc; /* verde claro */
+  background: #ccffcc;
   color: #006600;
   padding: 8px 12px;
   border-radius: 8px;
@@ -193,3 +224,4 @@ button {
     max-width: 200px;
   }
 }
+
